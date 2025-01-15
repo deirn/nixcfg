@@ -22,11 +22,9 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "ntfs" ];
 
-  # Set your time zone.
-  time.timeZone = "Asia/Jakarta";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
+  time.timeZone = "Asia/Jakarta";
+  time.hardwareClockInLocalTime = true; # Fix time when dual-booting with windows
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
