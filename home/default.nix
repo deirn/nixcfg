@@ -1,26 +1,29 @@
 { confg, pkgs, ... }:
 
 {
+  imports = [
+  	../gnome/home.nix
+  ];
+
+
+  ### META
+  
   home.username = "deirn";
   home.homeDirectory = "/home/deirn";
 
   home.packages = with pkgs; [
+    alacritty
     floorp
   	vesktop
+  	vlc
   ];
+
+  programs.bash.enable = true;
 
   programs.git = {
   	enable = true;
   	userName = "deirn";
   	userEmail = "deirn@bai.lol";
-
-#   	extraConfig = {
-#   	  credential.helper = "${
-#   	    pkgs.git.override { withLibsecret = true; }
-#   	  }/bin/git-credential-libsecret";
-# 
-#   	  commit.gpgsign = true;
-#   	};
   };
 
   # DO NOT TOUCH
