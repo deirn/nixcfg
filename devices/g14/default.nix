@@ -2,11 +2,11 @@
 
 {
   imports = with inputs; [
-  	./hardware-configuration.nix
-  	nixos-hardware.nixosModules.asus-zephyrus-ga401
+    ./hardware-configuration.nix
+    nixos-hardware.nixosModules.asus-zephyrus-ga401
 
-  	../common
-  	../../gnome/system.nix
+    ../common
+    ../../gnome/system.nix
   ];
 
   networking.hostName = "g14";

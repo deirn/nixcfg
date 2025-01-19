@@ -2,8 +2,8 @@
 
 {
   imports = [
-  	./packages.nix
-  	./users.nix
+    ./packages.nix
+    ./users.nix
   ];
 
   ### META
@@ -74,7 +74,7 @@
   ### NETWORKING
 
   networking.networkmanager = {
-  	enable = true;
-  	insertNameservers = [ "1.1.1.1" "1.0.0.1" ];
+    enable = true;
+    insertNameservers = [ "1.1.1.1" "1.0.0.1" ];
   };
 }

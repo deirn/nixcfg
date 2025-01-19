@@ -15,7 +15,7 @@
       ./packages.nix
       ./users.nix
 
-	  ../../gnome/system.nix
+    ../../gnome/system.nix
     ];
 
 

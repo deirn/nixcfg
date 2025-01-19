@@ -2,8 +2,8 @@
 
 {
   imports = [
-  	../gnome/home.nix
-  	./packages.nix
+    ../gnome/home.nix
+    ./packages.nix
   ];
 
 
