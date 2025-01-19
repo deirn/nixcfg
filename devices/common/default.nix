@@ -9,23 +9,32 @@
   ### META
 
   # Enable flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
+  # Add wheel to trusted users
+  nix.settings.trusted-users = [
+    "root"
+    "@wheel"
+  ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   environment.sessionVariables = rec {
-    XDG_CACHE_HOME  = "$HOME/.cache";
+    XDG_CACHE_HOME = "$HOME/.cache";
     XDG_CONFIG_HOME = "$HOME/.config";
-    XDG_DATA_HOME   = "$HOME/.local/share";
-    XDG_STATE_HOME  = "$HOME/.local/state";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_STATE_HOME = "$HOME/.local/state";
 
     # Not officially in the specification
-    XDG_BIN_HOME    = "$HOME/.local/bin";
-    PATH = [ 
+    XDG_BIN_HOME = "$HOME/.local/bin";
+    PATH = [
       "${XDG_BIN_HOME}"
     ];
-  };  
+  };
 
   ### SYSTEM
 
@@ -50,13 +59,12 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-
   ### AUDIO
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -70,11 +78,13 @@
     #media-session.enable = true;
   };
 
-
   ### NETWORKING
 
   networking.networkmanager = {
     enable = true;
-    insertNameservers = [ "1.1.1.1" "1.0.0.1" ];
+    insertNameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
   };
 }

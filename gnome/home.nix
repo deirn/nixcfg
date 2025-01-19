@@ -8,9 +8,11 @@ let
   ];
 in
 {
-  home.packages = extensions ++ (with pkgs; [
-    dconf-editor
-  ]);
+  home.packages =
+    extensions
+    ++ (with pkgs; [
+      dconf-editor
+    ]);
 
   services.gpg-agent.pinentryPackage = pkgs.pinentry-gnome3;
 

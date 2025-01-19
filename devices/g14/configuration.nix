@@ -2,25 +2,31 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      inputs.nixos-hardware.nixosModules.asus-zephyrus-ga401
+  imports = [
+    ./hardware-configuration.nix
+    inputs.nixos-hardware.nixosModules.asus-zephyrus-ga401
 
-      ./audio.nix
-      ./network.nix
-      ./packages.nix
-      ./users.nix
+    ./audio.nix
+    ./network.nix
+    ./packages.nix
+    ./users.nix
 
     ../../gnome/system.nix
-    ];
-
+  ];
 
   # Enable flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;

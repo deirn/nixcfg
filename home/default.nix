@@ -6,9 +6,8 @@
     ./packages.nix
   ];
 
-
   ### META
-  
+
   home.username = "deirn";
   home.homeDirectory = "/home/deirn";
 

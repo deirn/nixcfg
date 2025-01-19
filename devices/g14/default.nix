@@ -14,7 +14,6 @@
   # Disable dynamic boost as it is unavailable here
   hardware.nvidia.dynamicBoost.enable = false;
 
-
   ### META
 
   # This value determines the NixOS release from which the default
