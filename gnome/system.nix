@@ -1,8 +1,5 @@
 { pkgs, ... }:
 
-let
-  extensions = import ./extensions.nix { inherit pkgs; };
-in
 {
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
@@ -25,8 +22,4 @@ in
   	simple-scan       # scanner
   	totem             # video player
   ];
-
-  environment.systemPackages = (with pkgs.gnome; [
-  	dconf-editor
-  ]) ++ extensions;
 }
