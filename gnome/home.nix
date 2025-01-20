@@ -2,9 +2,11 @@
 
 let
   extensions = with pkgs.gnomeExtensions; [
-    appindicator
+    cloudflare-warp-toggle
+    pano
     pop-shell
     status-area-horizontal-spacing
+    tray-icons-reloaded
   ];
 in
 {
@@ -21,6 +23,11 @@ in
     "org/gnome/shell" = {
       disable-user-extensions = false;
       enabled-extensions = map (x: x.extensionUuid) extensions;
+    };
+
+    "org/gnome/shell/extensions/pano" = {
+      play-audio-on-copy = false;
+      send-notification-on-copy = false;
     };
 
     "org/gnome/shell/extensions/status-area-horizontal-spacing" = {

@@ -6,6 +6,7 @@
   ...
 }:
 
+with lib;
 let
   my.home = config.home.homeDirectory;
   my.config = config.xdg.configHome;
@@ -13,8 +14,11 @@ let
 
   # https://github.com/nix-community/home-manager/issues/676
   my.mkLink = path: { source = config.lib.file.mkOutOfStoreSymlink "${my.self}/${path}"; };
+
+  my.mkConfig = name: { "${my.config}/${name}" = my.mkLink name; };
+  my.mkConfigs = names: mkMerge (map my.mkConfig names);
 in
-lib.mkMerge [
+mkMerge [
   {
     home.packages = with pkgs; [
       devenv
@@ -23,7 +27,6 @@ lib.mkMerge [
       gnumake
       nodejs_22
       obsidian
-      python313
       vesktop
       vlc
     ];
@@ -48,6 +51,7 @@ lib.mkMerge [
     ### FONTS
     fonts.fontconfig.enable = true;
     home.packages = with pkgs; [
+      dejavu_fonts
       jetbrains-mono
       (nerdfonts.override {
         fonts = [
@@ -74,7 +78,7 @@ lib.mkMerge [
         ];
     };
 
-    home.file."${my.config}/doom" = my.mkLink "doom";
+    home.file = my.mkConfig "doom";
   }
   {
     ### GIT
@@ -114,8 +118,23 @@ lib.mkMerge [
           "17" = jdk17;
         };
 
-        my.fn = k: v: lib.nameValuePair ".jdk/${k}" { source = "${v}/lib/openjdk"; };
+        my.jdkFiles = mapAttrs' (k: v: nameValuePair ".jdk/${k}" { source = "${v}/lib/openjdk"; }) my.jdks;
+        my.jdkPaths = concatStringsSep "," (mapAttrsToList (k: v: v.source) my.jdkFiles);
       in
-      lib.mapAttrs' my.fn my.jdks;
+      mkMerge [
+        my.jdkFiles
+        {
+          ".gradle/gradle.properties".text = ''
+            org.gradle.java.installations.paths=${my.jdkPaths}
+          '';
+        }
+      ];
+  }
+  {
+    ### PYTHON
+    home.packages = with pkgs; [
+      python313
+      pipx
+    ];
   }
 ]

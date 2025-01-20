@@ -78,3 +78,6 @@
 
 ;; Make emacs fullscreen on start
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+;; Hide title bar
+(add-to-list 'default-frame-alist '(undecorated . t))

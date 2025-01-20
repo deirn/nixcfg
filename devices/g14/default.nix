@@ -5,7 +5,7 @@
     ./hardware-configuration.nix
     nixos-hardware.nixosModules.asus-zephyrus-ga401
 
-    ../common
+    ../../system
     ../../gnome/system.nix
   ];
 

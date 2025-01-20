@@ -1,9 +1,8 @@
 { pkgs, ... }:
 
 {
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
+    cloudflare-warp
     git
     micro
     wget
@@ -15,4 +14,6 @@
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
   environment.pathsToLink = [ "/share/zsh" ];
+
+  services.cloudflare-warp.enable = true;
 }
