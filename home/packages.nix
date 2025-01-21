@@ -58,6 +58,8 @@ mkMerge [
       vesktop
       vlc
     ];
+
+    programs.direnv.enable = true;
   }
   (
     ### ZSH
