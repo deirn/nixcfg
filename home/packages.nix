@@ -118,14 +118,23 @@ mkMerge [
           "17" = jdk17;
         };
 
-        my.jdkFiles = mapAttrs' (k: v: nameValuePair ".jdk/${k}" { source = "${v}/lib/openjdk"; }) my.jdks;
-        my.jdkPaths = concatStringsSep "," (mapAttrsToList (k: v: v.source) my.jdkFiles);
+        my.jdkHomes = mapAttrs (k: v: "${v}/lib/openjdk") my.jdks;
+        my.jdkFiles = mapAttrs' (k: v: nameValuePair ".jdk/${k}" { source = v; }) my.jdkHomes;
+        my.jdkPaths = concatStringsSep "," (mapAttrsToList (k: v: v) my.jdkHomes);
+        my.jdkEmacs = concatStringsSep ")\n  (" (
+          mapAttrsToList (k: v: ":name \"JavaSE-${k}\" :path \"${v}\"") my.jdkHomes
+        );
       in
       mkMerge [
         my.jdkFiles
         {
           ".gradle/gradle.properties".text = ''
             org.gradle.java.installations.paths=${my.jdkPaths}
+          '';
+          ".jdk/doom.el".text = ''
+            (setq lsp-java-configuration-runtimes '[
+              (${my.jdkEmacs})
+            ])
           '';
         }
       ];

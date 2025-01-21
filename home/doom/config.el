@@ -81,3 +81,13 @@
 
 ;; Hide title bar
 (add-to-list 'default-frame-alist '(undecorated . t))
+
+(after! lsp-java
+  ;; Configure Java configuration runtimes, generated in ../packages.nix
+  (load! "~/.jdk/doom.el" nil t)
+
+  ;; Download newer jdtls that supports newer Java.
+  ;; Run `lsp-update-server' after changed.
+  ;; https://github.com/emacs-lsp/lsp-java/issues/478
+  ;; https://download.eclipse.org/jdtls/milestones/
+  (setq lsp-java-jdt-download-url "https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.43.0/jdt-language-server-1.43.0-202412191447.tar.gz"))
