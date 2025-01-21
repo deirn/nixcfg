@@ -17,6 +17,34 @@ let
 
   my.mkConfig = name: { "${my.config}/${name}" = my.mkLink name; };
   my.mkConfigs = names: mkMerge (map my.mkConfig names);
+
+  my.glue = {
+    mk =
+      stage: name: fn:
+      fn "${my.config}/sh-glue/${stage}/${name}.sh";
+    mk' = stage: {
+      text =
+        name: text:
+        my.glue.mk stage name (x: {
+          "${x}".text = text;
+        });
+      source =
+        name: source:
+        my.glue.mk stage name (x: {
+          "${x}".source = source;
+        });
+      link =
+        name: link:
+        my.glue.mk stage name (x: {
+          "${x}" = my.mkLink link;
+        });
+    };
+
+    head = my.glue.mk' "head";
+    tail = my.glue.mk' "tail";
+
+    mkPath = path: ''PATH="$PATH:${path}"'';
+  };
 in
 mkMerge [
   {
@@ -31,22 +59,30 @@ mkMerge [
       vlc
     ];
   }
-  {
+  (
     ### ZSH
-    programs.zsh = {
-      enable = true;
-      enableCompletion = true;
-
-      initExtraBeforeCompInit = ''
-        source ${my.self}/zsh/before_comp.zsh
+    let
+      my2.mkGlueSh = stage: ''
+        for f in ${my.config}/sh-glue/${stage}/*; do
+            source $f
+        done
       '';
+    in
+    {
+      programs.zsh = {
+        enable = true;
+        enableCompletion = true;
 
-      initExtra = ''
-        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-        source ${my.self}/zsh/p10k.zsh
-      '';
-    };
-  }
+        initExtraBeforeCompInit = my2.mkGlueSh "head";
+        initExtra = my2.mkGlueSh "tail";
+      };
+
+      home.file = mkMerge [
+        (my.glue.tail.source "10-p10k-install" "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme")
+        (my.glue.tail.link "20-p10k-config" "zsh/p10k.zsh")
+      ];
+    }
+  )
   {
     ### FONTS
     fonts.fontconfig.enable = true;
@@ -78,7 +114,10 @@ mkMerge [
         ];
     };
 
-    home.file = my.mkConfig "doom";
+    home.file = mkMerge [
+      (my.mkConfig "doom")
+      (my.glue.head.text "10-emacs" (my.glue.mkPath "${my.config}/emacs/bin"))
+    ];
   }
   {
     ### GIT
@@ -113,27 +152,28 @@ mkMerge [
     home.file =
       with pkgs;
       let
-        my.jdks = {
+        my2.jdks = {
           "21" = jdk;
           "17" = jdk17;
         };
 
-        my.jdkHomes = mapAttrs (k: v: "${v}/lib/openjdk") my.jdks;
-        my.jdkFiles = mapAttrs' (k: v: nameValuePair ".jdk/${k}" { source = v; }) my.jdkHomes;
-        my.jdkPaths = concatStringsSep "," (mapAttrsToList (k: v: v) my.jdkHomes);
-        my.jdkEmacs = concatStringsSep ")\n  (" (
-          mapAttrsToList (k: v: ":name \"JavaSE-${k}\" :path \"${v}\"") my.jdkHomes
+        my2.jdkHomes = mapAttrs (k: v: "${v}/lib/openjdk") my2.jdks;
+        my2.jdkFiles = mapAttrs' (k: v: nameValuePair ".jdk/${k}" { source = v; }) my2.jdkHomes;
+        my2.jdkPaths = concatStringsSep "," (mapAttrsToList (k: v: v) my2.jdkHomes);
+        my2.jdkEmacs = concatStringsSep ")\n  (" (
+          mapAttrsToList (k: v: ":name \"JavaSE-${k}\" :path \"${v}\"") my2.jdkHomes
         );
       in
       mkMerge [
-        my.jdkFiles
+        my2.jdkFiles
+        (my.glue.head.text "10-java" ''JAVA_HOME="${my.home}/.jdk/21"'')
         {
           ".gradle/gradle.properties".text = ''
-            org.gradle.java.installations.paths=${my.jdkPaths}
+            org.gradle.java.installations.paths=${my2.jdkPaths}
           '';
           ".jdk/doom.el".text = ''
             (setq lsp-java-configuration-runtimes '[
-              (${my.jdkEmacs})
+              (${my2.jdkEmacs})
             ])
           '';
         }

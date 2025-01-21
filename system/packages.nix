@@ -16,4 +16,6 @@
   environment.pathsToLink = [ "/share/zsh" ];
 
   services.cloudflare-warp.enable = true;
+
+  programs.nix-ld.enable = true;
 }

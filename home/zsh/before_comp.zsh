@@ -1,3 +1,0 @@
-PATH="$PATH:$XDG_CONFIG_HOME/emacs/bin"
-
-JAVA_HOME="$HOME/.jdk/21/"
