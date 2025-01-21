@@ -75,19 +75,30 @@
 ;; they are implemented.
 
 (setq doom-font (font-spec :family "JetBrainsMono NF"))
-
 ;; Make emacs fullscreen on start
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
-
 ;; Hide title bar
 (add-to-list 'default-frame-alist '(undecorated . t))
+;; Increase window divider size
+(setq window-divider-default-bottom-width 5)
+(setq window-divider-default-right-width 5)
+
+;; Discord rich presense
+(after! elcord
+ (setq elcord-editor-icon "emacs_icon")
+ (setq elcord-use-major-mode-as-main-icon t))
 
 (after! lsp-java
   ;; Configure Java configuration runtimes, generated in ../packages.nix
   (load! "~/.jdk/doom.el" nil t)
-
   ;; Download newer jdtls that supports newer Java.
   ;; Run `lsp-update-server' after changed.
   ;; https://github.com/emacs-lsp/lsp-java/issues/478
   ;; https://download.eclipse.org/jdtls/milestones/
-  (setq lsp-java-jdt-download-url "https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.43.0/jdt-language-server-1.43.0-202412191447.tar.gz"))
+  (setq lsp-java-jdt-download-url "https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.43.0/jdt-language-server-1.43.0-202412191447.tar.gz")
+  ;; Give jdtls 2GB max
+  (setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m")))
+
+(after! treemacs
+  ;; Collapse empty directories
+  (setq treemacs-collapse-dirs 10))

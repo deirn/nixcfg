@@ -1,6 +1,8 @@
 clear
 result
 
+home/doom/custom.el
+
 # Devenv
 .devenv*
 devenv.local.nix
