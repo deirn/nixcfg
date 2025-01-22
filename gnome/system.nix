@@ -12,7 +12,7 @@
     gnome-calendar
     gnome-clocks
     gnome-connections # remote desktop
-    gnome-console
+    # gnome-console
     gnome-contacts
     gnome-maps
     gnome-text-editor
