@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    treefmt-nix.url = "github:numtide/treefmt-nix";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
@@ -12,44 +12,33 @@
     };
   };
 
-  outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      nixos-hardware,
-      home-manager,
-      treefmt-nix,
-      systems,
-      ...
-    }:
-    let
-      # Small tool to iterate over each systems
-      eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
+  outputs = inputs@{ nixpkgs, nixos-hardware, nixos-wsl, home-manager, ... }: let
+      lib = nixpkgs.lib;
 
-      # Eval the treefmt modules from ./treefmt.nix
-      treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
-    in
-    {
-      nixosConfigurations.g14 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
+      mkConfigs = attrs: lib.mapAttrs (k: v: v k) attrs;
 
-        modules = [
-          ./devices/g14
+      mkSystem = type: (name: mkSystemExtra type [] name);
+      mkSystemExtra = type: extraModules: (name: lib.nixosSystem {
+          system = type;
+          specialArgs = { inherit inputs; };
 
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.deirn = import ./home;
-          }
+          modules = [
+            (./host + "/${name}/system.nix")
+            home-manager.nixosModules.home-manager {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.deirn = import (./host + "/${name}/home.nix");
+            }
+          ] ++ extraModules;
+        }
+      );
+    in {
+      nixosConfigurations = mkConfigs {
+        g14 = mkSystem "x86_64-linux";
+
+        wsl = mkSystemExtra "x86_64-linux" [
+          nixos-wsl.nixosModules.default
         ];
       };
-
-      # Formatter, https://github.com/numtide/treefmt-nix
-      formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
-      checks = eachSystem (pkgs: {
-        formatting = treefmtEval.${pkgs.system}.config.build.check self;
-      });
     };
 }

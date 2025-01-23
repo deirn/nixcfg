@@ -76,12 +76,14 @@
 
 (setq doom-font (font-spec :family "JetBrainsMono NF"))
 ;; Make emacs fullscreen on start
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
+;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;; Hide title bar
-(add-to-list 'default-frame-alist '(undecorated . t))
+;; (add-to-list 'default-frame-alist '(undecorated . t))
 ;; Increase window divider size
 (setq window-divider-default-bottom-width 5)
 (setq window-divider-default-right-width 5)
+;; Make dired delete to trash
+(setq delete-by-moving-to-trash t)
 
 ;; Discord rich presense
 (after! elcord

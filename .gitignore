@@ -2,13 +2,3 @@ clear
 result
 
 home/doom/custom.el
-
-# Devenv
-.devenv*
-devenv.local.nix
-
-# direnv
-.direnv
-
-# pre-commit
-.pre-commit-config.yaml

@@ -1,15 +1,12 @@
-{ confg, pkgs, ... }:
+{ my, config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ../gnome/home.nix
-    ./packages.nix
-  ];
-
-  ### META
-
   home.username = "deirn";
   home.homeDirectory = "/home/deirn";
+
+  home.packages = with pkgs; [
+    glib
+  ];
 
   # DO NOT TOUCH
   home.stateVersion = "24.11";

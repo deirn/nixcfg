@@ -1,38 +1,31 @@
-{ ... }:
+{ my, inputs, ... }:
 
 {
-  imports = [
-    ./packages.nix
-    ./users.nix
-  ];
+  imports = with inputs; [
+    ./hardware-configuration.nix
+    nixos-hardware.nixosModules.asus-zephyrus-ga401
 
-  ### META
+    ../../system
+    ../../gnome/system.nix
+  ] + (my.modules [
+    "essentials"
+    "gnome"
+    "zsh"
+  ]);
 
-  # Enable flakes
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  networking.hostName = "g14";
 
-  # Add wheel to trusted users
-  nix.settings.trusted-users = [
-    "root"
-    "@wheel"
-  ];
+  # Disable dynamic boost as it is unavailable here
+  hardware.nvidia.dynamicBoost.enable = false;
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  ### USERS
 
-  environment.sessionVariables = rec {
-    XDG_CACHE_HOME = "$HOME/.cache";
-    XDG_CONFIG_HOME = "$HOME/.config";
-    XDG_DATA_HOME = "$HOME/.local/share";
-    XDG_STATE_HOME = "$HOME/.local/state";
-
-    # Not officially in the specification
-    XDG_BIN_HOME = "$HOME/.local/bin";
-    PATH = [
-      "${XDG_BIN_HOME}"
+  users.users.deirn = {
+    isNormalUser = true;
+    description = "deirn";
+    extraGroups = [
+      "networkmanager"
+      "wheel"
     ];
   };
 
@@ -87,4 +80,14 @@
       "1.0.0.1"
     ];
   };
+
+  ### META
+
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "24.11"; # Did you read the comment?
 }

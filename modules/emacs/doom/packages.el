@@ -49,3 +49,4 @@
 ;; (unpin! tu)
 
 (package! elcord)
+(package! trashed)
