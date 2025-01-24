@@ -10,7 +10,7 @@
   };
 
   home.file = lib.mkMerge [
-    (my.mkGlue.tail.source "10-p10k-install" "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme")
-    (my.mkGlue.tail.link "20-p10k-config" "modules/zsh/p10k.zsh")
+    (my.mkGlue.tail.source "install-powerlevel10k" "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme")
+    (my.mkGlue.tail.link "powerlevel10k-configurations" "modules/zsh/p10k.zsh")
   ];
 }

@@ -2,22 +2,22 @@ args@{ config, lib, pkgs, ... }:
 
 let
   my._root = ../.;
-  my.modules = modules: map (module : import (my._root + "/modules/${module}/home.nix") (lib.recursiveUpdate args {inherit my;})) modules;
+  my.module = module : import (my._root + "/modules/${module}/home.nix") (lib.recursiveUpdate args { inherit my; });
+  my.modules = modules: map my.module modules;
 
   my.home = config.home.homeDirectory;
   my.config = config.xdg.configHome;
   my.nixcfg = "${my.home}/.nixcfg";
-  my.mkAbsolute = path: "${my.nixcfg}/${path}";
 
   my.mkPathEnv = path: ''PATH="$PATH:${path}"'';
 
   #####
-  #{ `home.file` utilities
+  # `home.file` utilities
 
   # Make out of store symlink for non-nix configs.
   # This makes it possible to hot-reload configurations.
   # https://github.com/nix-community/home-manager/issues/676
-  my.mkLink = path: { source = config.lib.file.mkOutOfStoreSymlink (my.mkAbsolute path); };
+  my.mkLink = path: { source = config.lib.file.mkOutOfStoreSymlink "${my.nixcfg}/${path}"; };
 
   # Helpers for linking `~/.config/${target}` to `source`.
   # target: String, source: Path
@@ -57,6 +57,28 @@ let
           source $f
       done
     '';
+  };
+
+  #####
+  # `systemd.user.services` utilities
+
+  my.mkService = name: desc: source: {
+    "${name}" = {
+      Unit = {
+        Description = desc;
+      };
+
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
+
+      Service = {
+        ExecStart = "${pkgs.writeShellScript "service/${name}" ''
+          #!/run/current-system/sw/bin/bash
+          ${source}
+        ''}";
+      };
+    };
   };
 in
 my
