@@ -10,6 +10,7 @@ let
   my.nixcfg = "${my.home}/.nixcfg";
 
   my.mkPathEnv = path: ''PATH="$PATH:${path}"'';
+  my.mkFPathEnv = path: ''FPATH="$FPATH:${path}"'';
 
   #####
   # `home.file` utilities

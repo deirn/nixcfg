@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+switch() {
+    git add . && sudo nixos-rebuild switch $@
+}
+
+gc() {
+    sudo nix-collect-garbage --delete-old
+}
+
+update() {
+    nix flake update $@
+}
+
+(
+    cd "$HOME/.nixcfg/"
+    $@
+)

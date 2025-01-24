@@ -1,0 +1,48 @@
+#compdef nixcfg
+
+_nixcfg() {
+  local curcontext="$curcontext" state line
+  typeset -A opt_args
+
+  # Declare the available functions and their descriptions
+  local -a commands
+  commands=(
+    "switch:Add all files to Git and run 'nixos-rebuild switch'"
+    "gc:Run 'nix-collect-garbage' to delete old generations"
+    "update:Update Nix flakes"
+  )
+
+  # Determine the current state of completion
+  _arguments \
+    '1:command:->command' \
+    '*:arguments:->args'
+
+  case $state in
+    command)
+      # Suggest the available functions
+      _describe 'command' commands
+      ;;
+    args)
+      # Handle argument completion for specific functions
+      case $words[2] in
+        switch)
+          # Complete arguments for 'nixos-rebuild switch'
+          _nixos-rebuild
+          ;;
+        gc)
+          # 'gc' doesn't require specific arguments, so no completion here
+          ;;
+        update)
+          # Complete arguments for 'nix flake update'
+          _files
+          ;;
+        *)
+          # Fallback: Generic completion
+          _files
+          ;;
+      esac
+      ;;
+  esac
+}
+
+_nixcfg "$@"

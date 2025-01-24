@@ -9,7 +9,10 @@
   ];
 
   home.file = lib.mkMerge [
-    (my.mkGlue.head.text "add-cfg-bin-to-path" (my.mkPathEnv "${my.nixcfg}/bin"))
+    (my.mkGlue.head.text "add-cfg-bin-to-path" ''
+      ${my.mkPathEnv "${my.nixcfg}/bin"}
+      ${my.mkFPathEnv "${my.nixcfg}/bin/autocomplete"}
+    '')
   ];
 
   # DO NOT TOUCH

@@ -1,0 +1,15 @@
+#compdef use-vcxsrv
+
+_use-vcxsrv() {
+  # Complete subcommands or options by forwarding the completion request
+  # to the first argument of the script
+  if (( CURRENT > 1 )); then
+    # Use the first argument of the script as the command to delegate completion
+    _command $words[2]
+  else
+    # Fall back to generic command completion
+    _files
+  fi
+}
+
+_use-vcxsrv "$@"
