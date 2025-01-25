@@ -85,13 +85,10 @@
 ;; Make dired delete to trash
 (setq delete-by-moving-to-trash t)
 
-(after! centaur-tabs
-  (setq centaur-tabs-set-bar 'over))
-
 ;; Discord rich presense
 (after! elcord
- (setq elcord-editor-icon "emacs_icon")
- (setq elcord-use-major-mode-as-main-icon t))
+  (setq elcord-editor-icon "emacs_icon")
+  (setq elcord-use-major-mode-as-main-icon t))
 
 (after! lsp-java
   ;; Configure Java configuration runtimes, generated in ../packages.nix
@@ -107,3 +104,17 @@
 (after! treemacs
   ;; Collapse empty directories
   (setq treemacs-collapse-dirs 10))
+
+
+;; HACK: Translate C-i to H-i so it can be used in daemon mode
+(defun my/C-i ()
+  (when (display-graphic-p)
+    (key-translate "C-i" "H-i")))
+
+(my/C-i)
+(add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (with-selected-frame frame (my/C-i))))
+
+(after! better-jumper
+  (keymap-global-set "H-i" #'better-jumper-jump-forward))
