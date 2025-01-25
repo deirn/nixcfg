@@ -9,12 +9,17 @@
 
   programs.emacs = {
     enable = true;
-    package = pkgs.emacs-gtk;
+    package = pkgs.emacs;
 
     extraPackages =
       epkgs: with epkgs; [
         vterm
       ];
+  };
+
+  services.emacs = {
+    enable = true;
+    startWithUserSession = true;
   };
 
   home.file = lib.mkMerge [

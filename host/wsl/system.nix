@@ -28,7 +28,8 @@ in
     enable = true;
     defaultUser = "deirn";
     useWindowsDriver = true;
-    startMenuLaunchers = true;
+    # Enable Windows shortcut for GUI application
+    # startMenuLaunchers = true;
     # Disable addition of Windows PATH
     # interop.includePath = false;
   };

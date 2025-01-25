@@ -74,7 +74,7 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(setq doom-font (font-spec :family "JetBrainsMono NF"))
+(setq doom-font (font-spec :family "JetBrainsMono NF" :size 14))
 ;; Make emacs fullscreen on start
 ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;; Hide title bar
@@ -84,6 +84,9 @@
 (setq window-divider-default-right-width 5)
 ;; Make dired delete to trash
 (setq delete-by-moving-to-trash t)
+
+(after! centaur-tabs
+  (setq centaur-tabs-set-bar 'over))
 
 ;; Discord rich presense
 (after! elcord

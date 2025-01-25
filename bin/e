@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+
+# Emacs utility commands
+
+open() {
+    file="${1:-$(pwd)}"
+    command="emacsclient -n -c"
+
+    if [ is-wsl ]; then
+        command="use-vcxsrv $command"
+    fi
+
+    eval $command "$file"
+}
+
+daemon() {
+    systemctl --user "$1" emacs
+}
+
+case "$1" in
+    -d)
+        daemon "$2"
+        ;;
+    *)
+        open "$1"
+        ;;
+esac
