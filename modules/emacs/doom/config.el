@@ -118,3 +118,16 @@
 
 (after! better-jumper
   (keymap-global-set "H-i" #'better-jumper-jump-forward))
+
+
+;; On daemon mode, ask confirmation before closing Emacsclient
+(defun my/confirm-exit ()
+  (interactive)
+  (if (y-or-n-p "Really exit Emacsclient? ")
+      (save-buffers-kill-terminal)
+    (message "Canceled.")))
+
+(when (daemonp)
+  (map!
+   :g "C-x C-c" #'my/confirm-exit
+   :leader "q q" #'my/confirm-exit))
