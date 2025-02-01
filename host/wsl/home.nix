@@ -6,6 +6,7 @@ in
 {
   imports = my.modules [
     "essentials"
+    "bash"
     "devenv"
     "emacs"
     "fetch"
@@ -13,6 +14,18 @@ in
     "git"
     "python"
     "zsh"
+  ];
+
+  home.packages = with pkgs; [
+    sensible-utils
+    socat
+    wsl-open
+  ];
+
+  home.file = lib.mkMerge [
+    (my.mkGlue.head.text "use-wsl-open" ''
+      export BROWSER="wsl-open"
+    '')
   ];
 
   programs.git.signing.gpgPath = "/mnt/c/Program Files (x86)/GnuPG/bin/gpg.exe";

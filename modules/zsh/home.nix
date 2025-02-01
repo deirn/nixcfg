@@ -6,11 +6,10 @@
     enableCompletion = true;
 
     initExtraBeforeCompInit = my.mkGlue.init "head";
-    initExtra = my.mkGlue.init "tail";
+    initExtra = ''
+      ${my.mkGlue.init "tail"}
+      source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+      source ${my.nixcfg}/modules/zsh/p10k.zsh
+    '';
   };
-
-  home.file = lib.mkMerge [
-    (my.mkGlue.tail.source "install-powerlevel10k" "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme")
-    (my.mkGlue.tail.link "powerlevel10k-configurations" "modules/zsh/p10k.zsh")
-  ];
 }

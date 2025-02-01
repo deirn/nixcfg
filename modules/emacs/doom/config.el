@@ -80,10 +80,16 @@
 ;; Hide title bar
 ;; (add-to-list 'default-frame-alist '(undecorated . t))
 ;; Increase window divider size
-(setq window-divider-default-bottom-width 5)
-(setq window-divider-default-right-width 5)
+(setq window-divider-default-bottom-width 5
+      window-divider-default-right-width 5)
 ;; Make dired delete to trash
 (setq delete-by-moving-to-trash t)
+;; Always open link with sensible-browser
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "sensible-browser")
+;; File assoctiations
+(dolist (mode '(("\\.bean\\'" . beancount-mode)))
+  (add-to-list 'auto-mode-alist mode))
 
 ;; Discord rich presense
 (after! elcord

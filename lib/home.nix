@@ -53,11 +53,15 @@ let
     head = my.mkGlue._mk' "head";
     tail = my.mkGlue._mk' "tail";
 
-    init = stage: ''
-      for f in ${my.config}/sh-glue/${stage}/*; do
-          source $f
-      done
-    '';
+    init = stage: let
+      dir = "${my.config}/sh-glue/${stage}";
+      in ''
+        if [ -d "${dir}" ]; then
+          for f in ${dir}/*; do
+            source $f
+          done
+        fi
+      '';
   };
 
   #####

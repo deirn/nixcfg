@@ -50,3 +50,7 @@
 
 (package! elcord)
 (package! trashed)
+
+(package! discord-rp
+  :recipe (:host nil
+           :local-repo "~/Documents/git/discord-rp.el"))
