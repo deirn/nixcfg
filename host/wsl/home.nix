@@ -12,6 +12,7 @@ in
     "fetch"
     "fonts"
     "git"
+    "nodejs"
     "python"
     "zsh"
   ];
@@ -19,6 +20,7 @@ in
   home.packages = with pkgs; [
     sensible-utils
     socat
+    xdg-utils
     wsl-open
   ];
 

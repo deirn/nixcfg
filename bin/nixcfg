@@ -1,5 +1,9 @@
 #!/usr/bin/env zsh
 
+edit() {
+    e .
+}
+
 switch() {
     git add . && sudo nixos-rebuild switch $@
 }
