@@ -16,6 +16,10 @@ update() {
     nix flake update $@
 }
 
+cachix-use() {
+    cachix use $1 -m nixos -d ./modules/cachix/
+}
+
 (
     cd "$HOME/.nixcfg/"
     $@

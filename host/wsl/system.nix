@@ -19,6 +19,7 @@ in
 {
   imports = my.modules [
     "essentials"
+    "cachix"
     "zsh"
   ];
 

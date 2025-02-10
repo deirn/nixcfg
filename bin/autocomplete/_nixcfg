@@ -7,6 +7,7 @@ _nixcfg() {
   # Declare the available functions and their descriptions
   local -a commands
   commands=(
+    "cachix-use:cachix use"
     "edit:Open Emacs on nixcfg directory"
     "switch:Add all files to Git and run 'nixos-rebuild switch'"
     "gc:Run 'nix-collect-garbage' to delete old generations"
@@ -32,10 +33,6 @@ _nixcfg() {
           ;;
         gc|edit)
           # 'gc' doesn't require specific arguments, so no completion here
-          ;;
-        update)
-          # Complete arguments for 'nix flake update'
-          _files
           ;;
         *)
           # Fallback: Generic completion

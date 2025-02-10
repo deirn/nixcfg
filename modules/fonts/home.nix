@@ -5,11 +5,7 @@
   home.packages = with pkgs; [
     dejavu_fonts
     jetbrains-mono
-    (nerdfonts.override {
-      fonts = [
-        "JetBrainsMono"
-        "NerdFontsSymbolsOnly"
-      ];
-    })
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
   ];
 }
