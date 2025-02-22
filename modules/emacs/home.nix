@@ -18,11 +18,6 @@
       ];
   };
 
-  services.emacs = {
-    enable = true;
-    startWithUserSession = true;
-  };
-
   home.file = lib.mkMerge [
     (my.mkConfig "doom" "modules/emacs/doom")
     (my.mkGlue.head.text "add-emacs-bin-to-path" (my.mkPathEnv "${my.config}/emacs/bin"))

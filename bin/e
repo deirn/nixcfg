@@ -4,7 +4,7 @@
 
 open() {
     file="${1:-$(pwd)}"
-    command="emacsclient -n -c"
+    command="emacs"
 
     if [ is-wsl ]; then
         command="use-vcxsrv $command"
