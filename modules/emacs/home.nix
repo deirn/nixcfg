@@ -5,6 +5,7 @@
     gnumake
     ripgrep
     fd
+    emacs-lsp-booster
   ];
 
   programs.emacs = {
