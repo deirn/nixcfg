@@ -111,6 +111,10 @@
   ;; Collapse empty directories
   (setq treemacs-collapse-dirs 10))
 
+(after! lsp-mode
+  ;; https://github.com/emacs-lsp/lsp-mode/blob/master/docs/tutorials/how-to-turn-off.md
+  (setq lsp-signature-auto-activate nil)
+  (setq lsp-signature-render-documentation nil))
 
 ;; HACK: Translate C-i to H-i so it can be used in daemon mode
 (defun my/C-i ()

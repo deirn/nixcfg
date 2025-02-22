@@ -36,8 +36,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "ntfs" ];
 
-  i18n.defaultLocale = "en_US.UTF-8";
-  time.timeZone = "Asia/Jakarta";
   time.hardwareClockInLocalTime = true; # Fix time when dual-booting with windows
 
   # Enable the X11 windowing system.

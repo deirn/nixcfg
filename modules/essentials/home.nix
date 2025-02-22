@@ -6,6 +6,8 @@
 
   home.packages = with pkgs; [
     glib
+    busybox
+    zip
   ];
 
   home.file = lib.mkMerge [

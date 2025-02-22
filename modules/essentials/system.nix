@@ -21,6 +21,9 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  i18n.defaultLocale = "en_US.UTF-8";
+  time.timeZone = "Asia/Jakarta";
+
   environment.sessionVariables = rec {
     EDITOR = "micro";
 
