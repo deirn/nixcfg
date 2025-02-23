@@ -75,6 +75,8 @@
 ;; they are implemented.
 
 (setq doom-font (font-spec :family "JetBrainsMono NF" :size 14))
+(add-to-list 'doom-symbol-fallback-font-families "Noto Emoji")
+
 ;; Make emacs fullscreen on start
 ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;; Hide title bar
@@ -113,8 +115,12 @@
 
 (after! lsp-mode
   ;; https://github.com/emacs-lsp/lsp-mode/blob/master/docs/tutorials/how-to-turn-off.md
-  (setq lsp-signature-auto-activate nil)
-  (setq lsp-signature-render-documentation nil))
+  (setq lsp-signature-auto-activate nil
+        lsp-signature-render-documentation nil)
+  ;; Add directories to ignore from LSP watch
+  (dolist (dir '("[/\\\\]\\.devenv"
+                 "[/\\\\]\\.direnv"))
+    (push dir lsp-file-watch-ignored-directories)))
 
 ;; HACK: Translate C-i to H-i so it can be used in daemon mode
 (defun my/C-i ()

@@ -7,5 +7,6 @@
     jetbrains-mono
     nerd-fonts.jetbrains-mono
     nerd-fonts.symbols-only
+    noto-fonts-monochrome-emoji
   ];
 }
