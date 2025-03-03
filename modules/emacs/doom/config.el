@@ -75,28 +75,50 @@
 ;; they are implemented.
 
 (setq doom-font (font-spec :family "JetBrainsMono NF" :size 14))
+;; Fallback, for usage in LSP modeline
 (add-to-list 'doom-symbol-fallback-font-families "Noto Emoji")
 
 ;; Make emacs fullscreen on start
 ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;; Hide title bar
 ;; (add-to-list 'default-frame-alist '(undecorated . t))
+
 ;; Increase window divider size
 (setq window-divider-default-bottom-width 5
       window-divider-default-right-width 5)
+
 ;; Make dired delete to trash
 (setq delete-by-moving-to-trash t)
+
 ;; Always open link with sensible-browser
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "sensible-browser")
+
 ;; File assoctiations
-(dolist (mode '(("\\.bean\\'" . beancount-mode)))
-  (add-to-list 'auto-mode-alist mode))
+(defun my/assoc-ext (ext mode)
+  (add-to-list 'auto-mode-alist `(,(concat "\\." ext "\\'") . ,mode)))
+(my/assoc-ext "bean" 'beancount-mode)
+
+;; Svelte
+;; (use-package! svelte-mode :after '(typescript-mode javascript-mode))
+;; (add-to-list 'auto-mode-alist '("\\.svelte\\'" . svelte-mode))
+;; (after! svelte-mode
+;;   (add-hook 'svelte-mode-hook #'lsp! 'append))
+
+;; TODO: TailwindCSS
+;; (use-package! lsp-tailwindcss
+;;   :after lsp-mode
+;;   :init (setq lsp-tailwindcss-add-on-mode t))
+;; (after! lsp-tailwindcss
+;;   (setq lsp-tailwindcss-skip-config-check t))
 
 ;; Discord rich presense
-(after! elcord
+(use-package! elcord
+  :config
+  (require 'elcord)
   (setq elcord-editor-icon "emacs_icon")
-  (setq elcord-use-major-mode-as-main-icon t))
+  (setq elcord-use-major-mode-as-main-icon t)
+  (elcord-mode))
 
 (after! lsp-java
   ;; Configure Java configuration runtimes, generated in ../packages.nix
@@ -126,7 +148,6 @@
 (defun my/C-i ()
   (when (display-graphic-p)
     (key-translate "C-i" "H-i")))
-
 (my/C-i)
 (add-hook 'after-make-frame-functions
           (lambda (frame)
@@ -135,14 +156,12 @@
 (after! better-jumper
   (keymap-global-set "H-i" #'better-jumper-jump-forward))
 
-
-;; On daemon mode, ask confirmation before closing Emacsclient
+;; HACK: On daemon mode, ask confirmation before closing Emacsclient
 (defun my/confirm-exit ()
   (interactive)
   (if (y-or-n-p "Really exit Emacsclient? ")
       (save-buffers-kill-terminal)
     (message "Canceled.")))
-
 (when (daemonp)
   (map!
    :g "C-x C-c" #'my/confirm-exit

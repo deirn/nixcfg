@@ -9,8 +9,8 @@ let
   my.config = config.xdg.configHome;
   my.nixcfg = "${my.home}/.nixcfg";
 
-  my.mkPathEnv = path: ''PATH="$PATH:${path}"'';
-  my.mkFPathEnv = path: ''FPATH="$FPATH:${path}"'';
+  my.mkPathEnv = path: ''PATH="${path}:$PATH"'';
+  my.mkFPathEnv = path: ''FPATH="${path}:$FPATH"'';
 
   #####
   # `home.file` utilities
