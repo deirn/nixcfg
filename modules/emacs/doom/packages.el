@@ -55,6 +55,7 @@
 (package! trashed)
 (package! svelte-mode)
 (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+(package! prisma-mode :recipe (:host github :repo "pimeys/emacs-prisma-mode" :branch "main"))
 
 ;; (package! discord-rp
 ;;   :recipe (:host nil

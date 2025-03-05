@@ -99,6 +99,10 @@
   (add-to-list 'auto-mode-alist `(,(concat "\\." ext "\\'") . ,mode)))
 (my/assoc-ext "bean" 'beancount-mode)
 
+;; Prisma
+(my/assoc-ext "prisma" 'prisma-mode)
+(after! prisma-mode (add-hook 'prisma-mode-hook #'lsp! 'append))
+
 ;; Svelte
 ;; (use-package! svelte-mode :after '(typescript-mode javascript-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.svelte\\'" . svelte-mode))
