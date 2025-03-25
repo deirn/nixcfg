@@ -142,7 +142,9 @@
 (after! lsp-mode
   ;; https://github.com/emacs-lsp/lsp-mode/blob/master/docs/tutorials/how-to-turn-off.md
   (setq lsp-signature-auto-activate nil
-        lsp-signature-render-documentation nil)
+        lsp-signature-render-documentation nil
+        ;; Always ask before executing actions even for single action
+        lsp-auto-execute-action nil)
   ;; Add directories to ignore from LSP watch
   (dolist (dir '("[/\\\\]\\.devenv"
                  "[/\\\\]\\.direnv"))
