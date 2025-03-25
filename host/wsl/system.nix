@@ -29,6 +29,7 @@ in
     enable = true;
     defaultUser = "deirn";
     useWindowsDriver = true;
+    docker-desktop.enable = true;
     # Enable Windows shortcut for GUI application
     # startMenuLaunchers = true;
     # Disable addition of Windows PATH
